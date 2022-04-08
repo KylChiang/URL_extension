@@ -13,10 +13,11 @@ extension URL {
             return params.first(where: { $0.name == queryParam })?.value
         } else if let paramPairs = url.fragment?.components(separatedBy: "?").last?.components(separatedBy: "&") {
             // find url fragment componets after "?", and separated by "&"
-            for pair in paramPairs where pair.contains(queryParam) {
+            if let pair = paramPairs.filter({ $0.contains(queryParam) }).first {
                 return pair.components(separatedBy: "=").last
+            } else {
+                return nil
             }
-            return nil
         } else {
             return nil
         }
